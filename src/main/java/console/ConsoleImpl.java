@@ -27,6 +27,7 @@ import org.fisco.bcos.web3j.protocol.channel.ResponseExcepiton;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameter;
 import org.fisco.bcos.web3j.protocol.core.DefaultBlockParameterName;
 import org.fisco.bcos.web3j.protocol.core.RemoteCall;
+import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tx.Contract;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
@@ -944,17 +945,24 @@ public class ConsoleImpl implements ConsoleFace {
             return;
         }
         remoteCall = (RemoteCall<?>) func.invoke(contractObject, argobj);
-        Object result=null;
-        String returnObject = "";
-        try {
-             result = remoteCall.send();
-        }  catch (Exception e) {
-            System.out.println("transaction failed");
-        }
-        try {
-            returnObject = ContractClassFactory.getReturnObject(contractClass, funcName, parameterType, result);
-        }catch (Exception e) {
-            System.out.println("transaction  result decode failed");
+        Object result;
+				result = remoteCall.send();
+				if(result instanceof TransactionReceipt)
+				{
+					TransactionReceipt receipt = (TransactionReceipt)result;
+					if(!"0x0".equals(receipt.getStatus()))
+					{
+						System.out.println(receipt.getStatus());
+						System.out.println();
+						return;
+					}
+				}
+        String returnObject =
+                ContractClassFactory.getReturnObject(contractClass, funcName, parameterType, result);
+        if (returnObject == null) {
+            HelpInfo.promptNoFunc(params[1], funcName, params.length - 4);
+            return;
+
         }
         System.out.println(returnObject);
         System.out.println();
@@ -1144,6 +1152,16 @@ public class ConsoleImpl implements ConsoleFace {
         }
         remoteCall = (RemoteCall<?>) func.invoke(contractObject, argobj);
         Object result = remoteCall.send();
+				if(result instanceof TransactionReceipt)
+				{
+					TransactionReceipt receipt = (TransactionReceipt)result;
+					if(!"0x0".equals(receipt.getStatus()))
+					{
+						System.out.println(receipt.getStatus());
+						System.out.println();
+						return;
+					}
+				}
         String returnObject =
                 ContractClassFactory.getReturnObject(contractClass, funcName, parameterType, result);
         if (returnObject == null) {
