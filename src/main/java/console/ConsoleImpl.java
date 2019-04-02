@@ -7,6 +7,7 @@ import console.common.HelpInfo;
 import io.bretty.console.table.Alignment;
 import io.bretty.console.table.ColumnFormatter;
 import io.bretty.console.table.Table;
+
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.channel.handler.ChannelConnections;
 import org.fisco.bcos.channel.handler.GroupChannelConnectionsConfig;
@@ -37,6 +38,7 @@ import org.springframework.context.support.AbstractRefreshableApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+
 
 import java.io.*;
 import java.lang.reflect.Method;
@@ -357,6 +359,7 @@ public class ConsoleImpl implements ConsoleFace {
         channelEthereumService.setChannelService(service);
         channelEthereumService.setTimeout(60000);
         web3j = Web3j.build(channelEthereumService, groupID);
+        groupID = toGroupID;
         System.out.println("Switched to group " + groupID + ".");
         System.out.println();
     }
@@ -945,27 +948,23 @@ public class ConsoleImpl implements ConsoleFace {
             return;
         }
         remoteCall = (RemoteCall<?>) func.invoke(contractObject, argobj);
-        Object result;
-				result = remoteCall.send();
-				if(result instanceof TransactionReceipt)
-				{
-					TransactionReceipt receipt = (TransactionReceipt)result;
-					if(!"0x0".equals(receipt.getStatus()))
-					{
-						System.out.println(receipt.getStatus());
-						System.out.println();
-						return;
-					}
-				}
-        String returnObject =
-                ContractClassFactory.getReturnObject(contractClass, funcName, parameterType, result);
-        if (returnObject == null) {
-            HelpInfo.promptNoFunc(params[1], funcName, params.length - 4);
-            return;
+
+        Object result=null;
+        String returnObject = "";
+        try {
+             result = remoteCall.send();
+        }  catch (Exception e) {
+            System.out.println("transaction failed");
+        }
+        try {
+            returnObject = ContractClassFactory.getReturnObject(contractClass, funcName, parameterType, result);
+        }catch (Exception e) {
+            System.out.println("transaction  result decode failed");
 
         }
         System.out.println(returnObject);
         System.out.println();
+
     }
 
     @Override
@@ -1269,6 +1268,7 @@ public class ConsoleImpl implements ConsoleFace {
 						ConsensusService consensusService = new ConsensusService(web3j, credentials);
 						String result = consensusService.addObserver(nodeId);
 						ConsoleUtils.printJson(result);
+
         }
         System.out.println();
     }
