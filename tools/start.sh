@@ -9,6 +9,7 @@ LANG=zh_CN.UTF-8
 
 # @function: output log with red color (error log)
 # @param: content: error message
+
 function LOG_ERROR()
 {
     local content=${1}
@@ -24,13 +25,43 @@ function LOG_INFO()
 }
 
 function Usage() {
-    LOG_INFO "# Console TOOLS"
-    LOG_INFO "--Start console: \t./start [groupID] [privateKey]\n"
+    LOG_INFO "Usage:start the console"
+    LOG_INFO "./start.sh"
+    LOG_INFO "./start.sh groupID"
+    LOG_INFO "./start.sh groupID -pem pemName"
+    LOG_INFO "./start.sh groupID -p12 p12Name"
+    LOG_INFO "print console version:"
+    LOG_INFO "./start.sh --version or -v"
 }
 
+function check_java(){
+   version=$(java -version 2>&1 |grep version |awk '{print $3}')
+   len=${#version}-2
+   version=${version:1:len}
+
+   IFS='.' arr=($version)
+   IFS=' '
+   if [ -z ${arr[0]} ];then
+      LOG_ERROR "At least Java8 is required."
+      exit 1
+   fi
+   if [ ${arr[0]} -eq 1 ];then
+      if [ ${arr[1]} -lt 8 ];then
+           LOG_ERROR "At least Java8 is required."
+           exit 1
+      fi
+   elif [ ${arr[0]} -gt 8 ];then
+          :
+   else
+       LOG_ERROR "At least Java8 is required."
+       exit 1
+   fi
+}
 if [ "${1}" == "-h" ] || [ "${1}" == "--help" ] || [ "${1}" == "help" ];then
     Usage
-    exit 0
+elif [ "${1}" == "-v" ] || [ "${1}" == "--version" ];then
+    java -cp "apps/*:conf/:lib/*:classes/" console.common.ConsoleVersion
 else
-	java -cp "apps/*:conf/:lib/*:classes/" console.ConsoleClient $1 $2    
+   check_java
+   java -cp "apps/*:conf/:lib/*:classes/:accounts/" console.ConsoleClient $@
 fi
