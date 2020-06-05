@@ -6,6 +6,7 @@ import console.common.HelpInfo;
 import console.common.JlineUtils;
 import console.common.WelcomeInfo;
 import console.contract.ContractFace;
+import console.oracle.OracleService;
 import console.precompiled.PrecompiledFace;
 import console.precompiled.permission.PermissionFace;
 import console.web3j.Web3jFace;
@@ -31,6 +32,7 @@ public class ConsoleClient {
     private static PrecompiledFace precompiledFace;
     private static PermissionFace permissionFace;
     private static ContractFace contractFace;
+    private  static OracleService oracleService;
 
     public static int INPUT_FLAG = 0;
 
@@ -47,6 +49,7 @@ public class ConsoleClient {
             precompiledFace = consoleInitializer.getPrecompiledFace();
             permissionFace = consoleInitializer.getPermissionFace();
             contractFace = consoleInitializer.getContractFace();
+            oracleService = consoleInitializer.getOracleService();
             lineReader = JlineUtils.getLineReader();
             sc = new Scanner(System.in);
             KeyMap<Binding> keymap = lineReader.getKeyMaps().get(LineReader.MAIN);
@@ -127,6 +130,12 @@ public class ConsoleClient {
                     case "getBlockNumber":
                         web3jFace.getBlockNumber(params);
                         break;
+                    case "oracle-start":
+                        oracleService.oracleCoreDeploy();
+                        break;
+//                    case "oracle invoke":
+//                        oracleService.oracleCoreDeploy();
+//                        break;
                     case "getPbftView":
                         web3jFace.getPbftView(params);
                         break;

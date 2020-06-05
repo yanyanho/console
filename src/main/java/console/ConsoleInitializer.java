@@ -5,6 +5,7 @@ import console.common.ContractClassFactory;
 import console.common.HelpInfo;
 import console.contract.ContractFace;
 import console.contract.ContractImpl;
+import console.oracle.OracleService;
 import console.precompiled.PrecompiledFace;
 import console.precompiled.PrecompiledImpl;
 import console.precompiled.permission.PermissionFace;
@@ -52,7 +53,7 @@ public class ConsoleInitializer {
     private static final Logger logger = LoggerFactory.getLogger(ConsoleInitializer.class);
 
     private ChannelEthereumService channelEthereumService;
-    private ApplicationContext context;
+    public static ApplicationContext context;
     private ECKeyPair keyPair;
     private StaticGasProvider gasProvider =
             new StaticGasProvider(new BigInteger("300000000"), new BigInteger("300000000"));
@@ -68,6 +69,7 @@ public class ConsoleInitializer {
     private PrecompiledFace precompiledFace;
     private PermissionFace permissionFace;
     private ContractFace contractFace;
+    private OracleService oracleService;
 
     public void init(String[] args)
             throws InvalidAlgorithmParameterException, NoSuchAlgorithmException,
@@ -170,6 +172,8 @@ public class ConsoleInitializer {
             contractFace.setGasProvider(gasProvider);
             contractFace.setCredentials(credentials);
             contractFace.setWeb3j(web3j);
+
+            oracleService = new OracleService(web3j,credentials);
 
         } catch (ResponseExcepiton e) {
             if (e.getCode() == InvalidRequest) {
@@ -467,4 +471,14 @@ public class ConsoleInitializer {
     public ContractFace getContractFace() {
         return contractFace;
     }
+
+    public  OracleService getOracleService() {
+        return oracleService;
+    }
+
+    public  void setOracleService(OracleService oracleService) {
+        oracleService = oracleService;
+    }
+
+
 }
