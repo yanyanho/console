@@ -12,11 +12,13 @@ import org.fisco.bcos.channel.event.filter.EventLogUserParams;
 import org.fisco.bcos.web3j.abi.EventEncoder;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
+import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.fisco.bcos.web3j.tx.txdecode.TransactionDecoder;
 import org.fisco.bcos.web3j.utils.Numeric;
+import org.springframework.context.support.AbstractRefreshableApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
@@ -51,28 +53,29 @@ public class OracleService {
             System.out.println("oracle deploy failed!");;
         }
 
-        registerContractEvent();
         System.out.println("oracle core start successfully, address is: " + ORACLE_CORE_ADDRESS);
         System.out.println("please deploy your own oracle contract!");
     }
 
-    public void registerContractEvent() {
+    public void registerContractEvent(ContractEventCallback callBack) {
         // 传入abi作decoder:
-        TransactionDecoder decoder = new TransactionDecoder(OracleCore.ABI);
 
         // init EventLogUserParams for register
         EventLogUserParams params = initSingleEventLogUserParams();
-        ContractEventCallback callBack = new ContractEventCallback(this, decoder);
+
         org.fisco.bcos.channel.client.Service service = ConsoleInitializer.context.getBean(Service.class);
         service.registerEventLogFilter(params, callBack);
+        ((AbstractRefreshableApplicationContext) ConsoleInitializer.context).refresh();
+        System.out.println("oracle event register successfully!");
     }
 
 
     public void getDataFromUrlAndUpChain( String contractAddress, byte[] logId, String url, List<Object> httpResultIndexList) throws Exception {
-
+        System.out.println("begin get off-chain result: wating....... " );
        restTemplate.getMessageConverters().add(new PlainMappingJackson2HttpMessageConverter());
        HttpService  httpService = new HttpService(restTemplate);
         Object httpResult = httpService.getObjectByUrlAndKeys(url, httpResultIndexList);
+        System.out.println("get off-chain result: " + httpResult);
         //send transaction
         upBlockChain(contractAddress, logId, JSON.toJSONString(httpResult));
     }
@@ -83,8 +86,20 @@ public class OracleService {
     private void upBlockChain(String contractAddress, byte[] cid, String data) throws Exception {
         String cidStr = Numeric.toHexString(cid);
         log.info("upBlockChain start. contractAddress:{} data:{} cid:{}", contractAddress, data, cidStr);
+        System.out.println("upBlockChain start");
+
+        org.fisco.bcos.channel.client.Service service = ConsoleInitializer.context.getBean(Service.class);
+        ChannelEthereumService channelEthereumService = new ChannelEthereumService();
+        channelEthereumService.setChannelService(service);
+        service.run();
+        web3j = Web3j.build(channelEthereumService, service.getGroupId());
+        // no need
+      //  ((AbstractRefreshableApplicationContext) ConsoleInitializer.context).refresh();
+
         try {
-            log.info("&&&&& contractaddress" + contractAddress);
+            System.out.println("query version begin!");
+            log.info("version: " + web3j.getNodeVersion().send());
+            System.out.println("version: " + web3j.getNodeVersion().send());
             TemplateOracle templateOracle = TemplateOracle.load(contractAddress, web3j, credentials, contractGasProvider);
             TransactionReceipt receipt = templateOracle.__callback(cid, data).send();
             log.info("&&&&&" + receipt.getStatus());
@@ -95,7 +110,7 @@ public class OracleService {
         }
     }
 
-    private static void dealWithReceipt(TransactionReceipt receipt) {
+    public static void dealWithReceipt(TransactionReceipt receipt) {
         // log.info("*********"+ transactionReceipt.getOutput());
         if ("0x16".equals(receipt.getStatus()) && receipt.getOutput().startsWith("0x08c379a0")) {
             log.error("transaction error", DecodeOutputUtils.decodeOutputReturnString0x16(receipt.getOutput()));

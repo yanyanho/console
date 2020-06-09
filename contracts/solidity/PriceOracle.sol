@@ -24,7 +24,7 @@ contract PriceOracle is usingOracleCore {
         public
     {
         require(msg.sender == oracle_cbAddress());
-         if (!validIds[_myid])  revert();
+         require(validIds[_myid], "id must be not used!") ;
         price = _result;
         delete validIds[_myid];
         emit LogNewPriceMeasure(price);

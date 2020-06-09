@@ -11,6 +11,9 @@ public interface Web3jFace {
 
     void setWeb3j(Web3j web3j);
 
+
+    public Web3j getWeb3j() ;
+
     void getBlockNumber(String[] params) throws IOException;
 
     void getPbftView(String[] params) throws IOException;

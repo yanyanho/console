@@ -40,6 +40,11 @@ public class Web3jImpl implements Web3jFace {
     }
 
     @Override
+    public Web3j getWeb3j() {
+        return  web3j;
+    }
+
+    @Override
     public void setCredentials(Credentials credentials) {
         this.credentials = credentials;
     }

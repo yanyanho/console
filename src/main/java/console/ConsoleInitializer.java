@@ -6,6 +6,8 @@ import console.common.HelpInfo;
 import console.contract.ContractFace;
 import console.contract.ContractImpl;
 import console.oracle.OracleService;
+import console.oracle.contract.OracleCore;
+import console.oracle.event.callback.ContractEventCallback;
 import console.precompiled.PrecompiledFace;
 import console.precompiled.PrecompiledImpl;
 import console.precompiled.permission.PermissionFace;
@@ -42,6 +44,7 @@ import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
 import org.fisco.bcos.web3j.protocol.channel.ResponseExcepiton;
 import org.fisco.bcos.web3j.protocol.core.methods.response.NodeVersion.Version;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
+import org.fisco.bcos.web3j.tx.txdecode.TransactionDecoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -58,7 +61,7 @@ public class ConsoleInitializer {
     private StaticGasProvider gasProvider =
             new StaticGasProvider(new BigInteger("300000000"), new BigInteger("300000000"));
     private Web3j web3j = null;
-    private Credentials credentials;
+    public static Credentials credentials;
     private String privateKey = "";
     private int groupID;
     public static final int InvalidRequest = 40009;
@@ -70,6 +73,7 @@ public class ConsoleInitializer {
     private PermissionFace permissionFace;
     private ContractFace contractFace;
     private OracleService oracleService;
+    private   ContractEventCallback oracleCallBack;
 
     public void init(String[] args)
             throws InvalidAlgorithmParameterException, NoSuchAlgorithmException,
@@ -174,6 +178,8 @@ public class ConsoleInitializer {
             contractFace.setWeb3j(web3j);
 
             oracleService = new OracleService(web3j,credentials);
+            TransactionDecoder decoder = new TransactionDecoder(OracleCore.ABI);
+             oracleCallBack = new ContractEventCallback(oracleService, decoder);
 
         } catch (ResponseExcepiton e) {
             if (e.getCode() == InvalidRequest) {
@@ -481,4 +487,11 @@ public class ConsoleInitializer {
     }
 
 
+    public ContractEventCallback getOracleCallBack() {
+        return oracleCallBack;
+    }
+
+    public void setOracleCallBack(ContractEventCallback oracleCallBack) {
+        this.oracleCallBack = oracleCallBack;
+    }
 }

@@ -7,6 +7,7 @@ import console.common.JlineUtils;
 import console.common.WelcomeInfo;
 import console.contract.ContractFace;
 import console.oracle.OracleService;
+import console.oracle.event.callback.ContractEventCallback;
 import console.precompiled.PrecompiledFace;
 import console.precompiled.permission.PermissionFace;
 import console.web3j.Web3jFace;
@@ -33,6 +34,7 @@ public class ConsoleClient {
     private static PermissionFace permissionFace;
     private static ContractFace contractFace;
     private  static OracleService oracleService;
+    private static ContractEventCallback oracleCallBack;
 
     public static int INPUT_FLAG = 0;
 
@@ -50,6 +52,7 @@ public class ConsoleClient {
             permissionFace = consoleInitializer.getPermissionFace();
             contractFace = consoleInitializer.getContractFace();
             oracleService = consoleInitializer.getOracleService();
+            oracleCallBack = consoleInitializer.getOracleCallBack();
             lineReader = JlineUtils.getLineReader();
             sc = new Scanner(System.in);
             KeyMap<Binding> keymap = lineReader.getKeyMaps().get(LineReader.MAIN);
@@ -132,6 +135,9 @@ public class ConsoleClient {
                         break;
                     case "oracle-start":
                         oracleService.oracleCoreDeploy();
+                        break;
+                     case "oracle-register":
+                        oracleService.registerContractEvent(oracleCallBack);
                         break;
 //                    case "oracle invoke":
 //                        oracleService.oracleCoreDeploy();
