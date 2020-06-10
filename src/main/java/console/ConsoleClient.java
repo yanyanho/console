@@ -136,11 +136,8 @@ public class ConsoleClient {
                     case "oracle-start":
                         oracleService.oracleCoreDeploy();
                         break;
-                     case "oracle-register":
-                        oracleService.registerContractEvent(oracleCallBack);
-                        break;
-//                    case "oracle invoke":
-//                        oracleService.oracleCoreDeploy();
+//                     case "oracle-register":
+//                        oracleService.registerContractEvent(oracleCallBack);
 //                        break;
                     case "getPbftView":
                         web3jFace.getPbftView(params);

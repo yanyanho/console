@@ -2,7 +2,7 @@ pragma solidity ^0.4.24;
 
 import "./Oracle.sol";
 
-contract PriceOracle is usingOracleCore {
+contract RandomOracle is usingOracleCore {
 
     string public price;
     bytes32 public id;
