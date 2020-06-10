@@ -31,11 +31,11 @@ $ ./gradlew build
  1. 编写自己的Oracle合约并拷贝到./contracts/console/solidity目录下（（可参考SampleOracle合约）），合约必须继承usingOracleCore，并且实现 
   function __callback(bytes32 _myid,string memory _result) 方法，方便oracleService回调这个方法。
  2. oracle-start  
-  此命令会用特定私钥执行oraclecore合约的部署，oracle-core合约对应由oracleService管理，oracleService并注册event事件监听。
+  此命令会用特定私钥执行OracleCore合约的部署，OracleCore合约对应由oracleService管理，oracleService并注册event事件监听。
  3. deploy SampleOracle  
    部署合约
- 4. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  oracle_setNetwork "oraclecore地址"   
-  设置oraclecore地址，这样SampleOracle可以调用oraclecore合约。
+ 4. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  oracle_setNetwork "OracleCore地址"   
+  设置OracleCore地址，这样SampleOracle可以调用OracleCore合约。
  5. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  setUrl "json(http://t.weather.sojson.com/api/weather/city/101030100).data.wendu"    
    设置你要访问的url。
  6. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  update
