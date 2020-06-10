@@ -1,4 +1,4 @@
-package temp;
+package console.temp;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -93,8 +93,8 @@ public class RandomOracle extends Contract {
     public RemoteCall<TransactionReceipt> __callback(byte[] _myid, String _result) {
         final Function function = new Function(
                 FUNC___CALLBACK, 
-                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.generated.Bytes32(_myid), 
-                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(_result)), 
+                Arrays.<Type>asList(new Bytes32(_myid),
+                new Utf8String(_result)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -102,8 +102,8 @@ public class RandomOracle extends Contract {
     public void __callback(byte[] _myid, String _result, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC___CALLBACK, 
-                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.generated.Bytes32(_myid), 
-                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(_result)), 
+                Arrays.<Type>asList(new Bytes32(_myid),
+                new Utf8String(_result)),
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -111,8 +111,8 @@ public class RandomOracle extends Contract {
     public String __callbackSeq(byte[] _myid, String _result) {
         final Function function = new Function(
                 FUNC___CALLBACK, 
-                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.generated.Bytes32(_myid), 
-                new org.fisco.bcos.web3j.abi.datatypes.Utf8String(_result)), 
+                Arrays.<Type>asList(new Bytes32(_myid),
+                new Utf8String(_result)),
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -133,7 +133,7 @@ public class RandomOracle extends Contract {
     public RemoteCall<TransactionReceipt> oracle_setNetwork(String oracleAddress) {
         final Function function = new Function(
                 FUNC_ORACLE_SETNETWORK, 
-                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Address(oracleAddress)), 
+                Arrays.<Type>asList(new Address(oracleAddress)),
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -141,7 +141,7 @@ public class RandomOracle extends Contract {
     public void oracle_setNetwork(String oracleAddress, TransactionSucCallback callback) {
         final Function function = new Function(
                 FUNC_ORACLE_SETNETWORK, 
-                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Address(oracleAddress)), 
+                Arrays.<Type>asList(new Address(oracleAddress)),
                 Collections.<TypeReference<?>>emptyList());
         asyncExecuteTransaction(function, callback);
     }
@@ -149,7 +149,7 @@ public class RandomOracle extends Contract {
     public String oracle_setNetworkSeq(String oracleAddress) {
         final Function function = new Function(
                 FUNC_ORACLE_SETNETWORK, 
-                Arrays.<Type>asList(new org.fisco.bcos.web3j.abi.datatypes.Address(oracleAddress)), 
+                Arrays.<Type>asList(new Address(oracleAddress)),
                 Collections.<TypeReference<?>>emptyList());
         return createTransactionSeq(function);
     }
@@ -217,9 +217,9 @@ public class RandomOracle extends Contract {
     }
 
     public List<LogNewQueryEventResponse> getLogNewQueryEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(LOGNEWQUERY_EVENT, transactionReceipt);
+        List<EventValuesWithLog> valueList = extractEventParametersWithLog(LOGNEWQUERY_EVENT, transactionReceipt);
         ArrayList<LogNewQueryEventResponse> responses = new ArrayList<LogNewQueryEventResponse>(valueList.size());
-        for (Contract.EventValuesWithLog eventValues : valueList) {
+        for (EventValuesWithLog eventValues : valueList) {
             LogNewQueryEventResponse typedResponse = new LogNewQueryEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.description = (String) eventValues.getNonIndexedValues().get(0).getValue();
@@ -239,9 +239,9 @@ public class RandomOracle extends Contract {
     }
 
     public List<LogNewTempMeasureEventResponse> getLogNewTempMeasureEvents(TransactionReceipt transactionReceipt) {
-        List<Contract.EventValuesWithLog> valueList = extractEventParametersWithLog(LOGNEWTEMPMEASURE_EVENT, transactionReceipt);
+        List<EventValuesWithLog> valueList = extractEventParametersWithLog(LOGNEWTEMPMEASURE_EVENT, transactionReceipt);
         ArrayList<LogNewTempMeasureEventResponse> responses = new ArrayList<LogNewTempMeasureEventResponse>(valueList.size());
-        for (Contract.EventValuesWithLog eventValues : valueList) {
+        for (EventValuesWithLog eventValues : valueList) {
             LogNewTempMeasureEventResponse typedResponse = new LogNewTempMeasureEventResponse();
             typedResponse.log = eventValues.getLog();
             typedResponse.temp = (String) eventValues.getNonIndexedValues().get(0).getValue();

@@ -4,12 +4,12 @@ import "./Oracle.sol";
 
 contract WeatherOracle is usingOracleCore {
 
-    string public price;
+    string private temp;
     bytes32 public id;
     mapping(bytes32=>bool) validIds;
 
     event LogNewQuery(string description);
-    event LogNewPriceMeasure(string price);
+    event LogNewTempMeasure(string temp);
 
     constructor()
         public
@@ -25,9 +25,9 @@ contract WeatherOracle is usingOracleCore {
     {
         require(msg.sender == oracle_cbAddress());
          require(validIds[_myid], "id must be not used!") ;
-        price = _result;
+        temp = _result;
         delete validIds[_myid];
-        emit LogNewPriceMeasure(price);
+        emit LogNewTempMeasure(temp);
 
     }
 
@@ -40,6 +40,6 @@ contract WeatherOracle is usingOracleCore {
     }
 
       function get()  public view  returns(string){
-              return price;
+              return temp;
             }
 }

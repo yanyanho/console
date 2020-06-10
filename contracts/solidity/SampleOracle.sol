@@ -2,11 +2,12 @@ pragma solidity ^0.4.24;
 
 import "./Oracle.sol";
 
-contract RandomOracle is usingOracleCore {
+contract SampleOracle is usingOracleCore {
 
     string private temp;
     bytes32 public id;
     mapping(bytes32=>bool) validIds;
+    string private url;
 
     event LogNewQuery(string description);
     event LogNewTempMeasure(string temp);
@@ -35,11 +36,17 @@ contract RandomOracle is usingOracleCore {
         public
     {
         emit LogNewQuery("Oracle query was sent, standing by for the answer...");
-        id = oracle_query("url", "plain(https://www.random.org/integers/?num=100&min=1&max=100&col=1&base=10&format=plain&rnd=new)");
+        id = oracle_query("url", url);
         validIds[id] = true;
     }
 
       function get()  public view  returns(string){
-              return temp;
-      }
+       return temp;
+     }
+
+       function setUrl(string _url)  public
+         {
+          url = _url;
+         }
+
 }

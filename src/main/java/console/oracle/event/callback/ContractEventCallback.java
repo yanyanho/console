@@ -87,7 +87,6 @@ public class ContractEventCallback extends EventLogPushWithDecodeCallback {
                 String header = argValue.substring(0,left);
                 String url = argValue.substring(left+1,right);
                 List<Object> httpResultIndexList = subFiledValueForHttpResultIndex(argValue);
-                System.out.println("****" + httpResultIndexList.size());
                 //get data from url and update blockChain
                 oracleService.getDataFromUrlAndUpChain(contractAddress, cid.getValue(), url, httpResultIndexList);
                 logger.info("cid:{}   callback success", cidStr);

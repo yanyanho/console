@@ -1,6 +1,5 @@
 package console;
 
-import static console.oracle.OracleService.dealWithReceipt;
 import static console.oracle.contract.OracleCore.LOG1_EVENT;
 import static org.junit.Assert.assertTrue;
 
@@ -15,20 +14,17 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-import console.common.HttpsUtil;
 import console.oracle.OracleService;
 import console.oracle.contract.OracleCore;
 import console.oracle.contract.TemplateOracle;
 import console.oracle.event.callback.ContractEventCallback;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import console.temp.RandomOracle;
+import console.temp.WeatherOracle;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.BasicHttpClientConnectionManager;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.channel.event.filter.EventLogUserParams;
 import org.fisco.bcos.web3j.abi.EventEncoder;
@@ -42,7 +38,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.springframework.context.support.AbstractRefreshableApplicationContext;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
@@ -163,23 +158,23 @@ public class Web3jTest extends TestBase {
         OracleCore oraliceCore = OracleCore.deploy(web3j, credentials, contractGasProvider).send();
          orcleAddress = oraliceCore.getContractAddress();
         // asset
-        PriceOracle temperatureOracle = PriceOracle.deploy(web3j, credentials, contractGasProvider).send();
+        RandomOracle randomOracle = RandomOracle.deploy(web3j, credentials, contractGasProvider).send();
 
-        TransactionReceipt t=  temperatureOracle.oracle_setNetwork(orcleAddress).send();
+        TransactionReceipt t=  randomOracle.oracle_setNetwork(orcleAddress).send();
 
         System.out.println(t.getStatus());
       //  TransactionReceipt t1 = temperatureOracle.update().send();
         // t1.getLogs().
 
         // temperatureOracle.__callback()
-        TemplateOracle templateOracle = TemplateOracle.load(temperatureOracle.getContractAddress(),web3j, credentials,contractGasProvider);
+        TemplateOracle templateOracle = TemplateOracle.load(randomOracle.getContractAddress(),web3j, credentials,contractGasProvider);
 
        // byte[] bytes1=  temperatureOracle.id().send();
 
        // TransactionReceipt  transactionReceipt = templateOracle.__callback("0x119a31bf842976a1ab23a8484f7c91".getBytes(), "21").send();
 
        //+ System.out.println(bytesToHex(bytes1));
-        System.out.println(temperatureOracle.price().send());
+        System.out.println(randomOracle.get().send());
       //  System.out.println(transactionReceipt.getStatus());
 
        // System.out.println(transactionReceipt.getOutput());
@@ -198,11 +193,11 @@ public class Web3jTest extends TestBase {
         //必须要刷新service
       ((AbstractRefreshableApplicationContext) ConsoleInitializer.context).refresh();
 
-        TransactionReceipt t11 = temperatureOracle.update().send();
+        TransactionReceipt t11 = randomOracle.update().send();
         System.out.println(t11.getStatus());
         Thread.sleep(1000);
-       String s=  temperatureOracle.get().send();
-        System.out.println("price get: " + s);
+        String s=  randomOracle.get().send();
+        System.out.println("temp get: " + s);
         System.out.println("oracle event register successfully!");
 
     }
@@ -230,7 +225,7 @@ public class Web3jTest extends TestBase {
        // TransactionReceipt  transactionReceipt = templateOracle.__callback("0x119a31bf842976a1ab23a8484f7c91".getBytes(), "21").send();
 
        //+ System.out.println(bytesToHex(bytes1));
-        System.out.println(temperatureOracle.price().send());
+        System.out.println(temperatureOracle.get().send());
       //  System.out.println(transactionReceipt.getStatus());
 
        // System.out.println(transactionReceipt.getOutput());
