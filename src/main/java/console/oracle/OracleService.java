@@ -56,7 +56,9 @@ public class OracleService {
         if (ORACLE_CORE_ADDRESS == null) {
             System.out.println("oracle deploy failed!");;
         }
-        System.out.println("oracle core start successfully, address is: " + ORACLE_CORE_ADDRESS);
+        System.out.println("oracle core start successfully!");
+        System.out.println("oracle core contract address is:" + ORACLE_CORE_ADDRESS);
+        System.out.println("oracle service user address  is:" + credentials.getAddress());
         registerContractEvent();
         System.out.println("oracle core event listening register successfully!");
         System.out.println("now ,please deploy your own oracle contract!");

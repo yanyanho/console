@@ -62,6 +62,7 @@ public class ConsoleInitializer {
             new StaticGasProvider(new BigInteger("300000000"), new BigInteger("300000000"));
     private Web3j web3j = null;
     public static Credentials credentials;
+    public static Credentials oracleCredential = Credentials.create("2");
     private String privateKey = "";
     private int groupID;
     public static final int InvalidRequest = 40009;
@@ -176,8 +177,7 @@ public class ConsoleInitializer {
             contractFace.setGasProvider(gasProvider);
             contractFace.setCredentials(credentials);
             contractFace.setWeb3j(web3j);
-
-            oracleService = new OracleService(web3j,credentials);
+            oracleService = new OracleService(web3j,oracleCredential);
             TransactionDecoder decoder = new TransactionDecoder(OracleCore.ABI);
              oracleCallBack = new ContractEventCallback(oracleService, decoder);
 

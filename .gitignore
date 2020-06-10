@@ -42,3 +42,5 @@ build.gradle.bak
 .project
 .settings/**
 .classpath
+deploylog.txt
+applicationContext.xml
