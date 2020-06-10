@@ -107,7 +107,7 @@ public class Web3jTest extends TestBase {
     @Test
     public void testRestTemplate1() throws IOException, KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
       System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,TLSv1,SSLv3");
-    TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
+      TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
             @Override
             public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
                 return true;

@@ -1,8 +1,11 @@
 package console;
 
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,4 +37,10 @@ public class OracleTest {
 
 
     }
+//
+//    @Test
+//    public void htmlParseTest() throws IOException {
+//        Document document = Jsoup.connect("http://blog.beifengtz.com/").get();
+//        System.out.println(document);
+//    }
 }
