@@ -2,13 +2,7 @@
 # Oracle控制台
 
 控制台是[FISCO BCOS 2.0+](https://fisco-bcos-documentation.readthedocs.io/zh_CN/latest/)的重要交互式客户端工具。控制台拥有丰富的命令，包括查询区块链状态、管理区块链节点、部署并调用合约等。
-
-## 关键特性
-
- - 提供大量的区块链状态查询命令。
- - 提供简单易用的部署和调用合约命令。
- - 提供一些可以管理区块链节点的命令。
- - 提供一个合约编译工具，用户可以方便快捷的将Solidity合约文件编译为Java合约文件。
+![oracle流程图](./oracle.png)
 
 
 ## 源码安装

@@ -30,10 +30,6 @@ contract usingOracleCore {
          _myid; _result;
     }
 
-
-
-
-
     function oracle_query(string memory _datasource, string memory _arg)  internal returns (bytes32 _id) {
 
         return oracleCoreI.query(0, _datasource, _arg);
