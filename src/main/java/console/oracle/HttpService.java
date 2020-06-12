@@ -3,6 +3,7 @@ package console.oracle;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import console.common.HttpsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -42,6 +43,7 @@ public class HttpService {
 //            HttpEntity<String> entity = new HttpEntity<String>("parameters",headers);
  //           Object result = restTemplate.exchange(url, HttpMethod.GET, entity, Object.class);
             Object result = restTemplate.getForObject(url, Object.class);
+           // HttpsUtil.get(url);
             return getValueByKeys(result, resultKeyList);
         } catch (Exception ex) {
             log.error("getObjectByUrlAndKeys error, url:{} resultKeyList:{}", url, JSON.toJSONString(resultKeyList), ex);
