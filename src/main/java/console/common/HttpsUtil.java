@@ -35,7 +35,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.alibaba.fastjson.JSON;
+import static console.common.JsonUtils.toJSONString;
 
 public class HttpsUtil {
 
@@ -152,7 +152,7 @@ public class HttpsUtil {
             }
             logger.info("send POST request : url:[{}],params:[{}], result :[{}]",
                     url,
-                    data instanceof String ? data : JSON.toJSONString(data),
+                    data instanceof String ? data : toJSONString(data),
                     result);
         }
         return result;
@@ -166,8 +166,8 @@ public class HttpsUtil {
      * @param encoding
      * @return
      */
-    public static String tryGet(String url, String encoding) {
-        String resultStr = "";
+    public static Object tryGet(String url, String encoding) {
+        Object resultStr = "";
         for (int i = 0; i < 3; i++) {
             try {
                 resultStr = get(url, encoding);

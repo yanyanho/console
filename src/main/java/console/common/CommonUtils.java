@@ -15,7 +15,6 @@
  */
 package console.common;
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.web3j.abi.datatypes.generated.Bytes32;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
@@ -23,6 +22,9 @@ import org.fisco.bcos.web3j.tx.txdecode.EventResultEntity;
 import org.fisco.bcos.web3j.utils.Numeric;
 
 import java.util.List;
+
+import static console.common.JsonUtils.stringToObj;
+import static console.common.JsonUtils.toJSONString;
 
 /**
  * CommonUtils.
@@ -78,7 +80,7 @@ public class CommonUtils {
             if (Bytes32.class == resultClazz) {
                 return (T) param.getTypeObject();
             }
-            return JSON.parseObject(JSON.toJSONString(param.getData()), resultClazz);
+            return stringToObj(toJSONString(param.getData()), resultClazz);
         }
         return null;
     }

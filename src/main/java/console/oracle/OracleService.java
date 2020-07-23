@@ -1,6 +1,5 @@
 package console.oracle;
 
-import com.alibaba.fastjson.JSON;
 import console.ConsoleInitializer;
 import console.common.DecodeOutputUtils;
 import console.oracle.contract.OracleCore;
@@ -29,6 +28,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static console.common.JsonUtils.toJSONString;
 import static console.oracle.contract.OracleCore.LOG1_EVENT;
 
 @Slf4j
@@ -85,7 +85,7 @@ public class OracleService {
         Object httpResult = httpService.getObjectByUrlAndKeys(url, httpResultIndexList);
         System.out.println(" oracle service gets off-chain result: " + httpResult);
         //send transaction
-        upBlockChain(contractAddress, logId, JSON.toJSONString(httpResult));
+        upBlockChain(contractAddress, logId, toJSONString(httpResult));
     }
 
     /**
