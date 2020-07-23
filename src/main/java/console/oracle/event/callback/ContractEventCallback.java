@@ -84,11 +84,11 @@ public class ContractEventCallback extends EventLogPushWithDecodeCallback {
                 //  argValue = argValue.replace(SUB_URL_EVENT_FILED_PREFIX, "");
                 int left = argValue.indexOf("(");
                 int right = argValue.indexOf(")");
-                String header = argValue.substring(0,left);
+                String format = argValue.substring(0,left);
                 String url = argValue.substring(left+1,right);
-                List<Object> httpResultIndexList = subFiledValueForHttpResultIndex(argValue);
+                List<String> httpResultIndexList = subFiledValueForHttpResultIndex(argValue);
                 //get data from url and update blockChain
-                oracleService.getDataFromUrlAndUpChain(contractAddress, cid.getValue(), url, httpResultIndexList);
+                oracleService.getDataFromUrlAndUpChain(contractAddress, cid.getValue(), url,format, httpResultIndexList);
                 logger.info("cid:{}   callback success", cidStr);
                 System.out.println( "oracle service upload result to blockchain successfully, please query your contract for result!");
             } catch (Exception ex) {
@@ -133,7 +133,7 @@ public class ContractEventCallback extends EventLogPushWithDecodeCallback {
      * @param argValue
      * @return
      */
-    private List<Object> subFiledValueForHttpResultIndex(String argValue) {
+    private List<String> subFiledValueForHttpResultIndex(String argValue) {
         if (StringUtils.isBlank(argValue) || argValue.endsWith(")")) {
             logger.warn("argValue is:{} ,return empty list", argValue);
             return Collections.EMPTY_LIST;

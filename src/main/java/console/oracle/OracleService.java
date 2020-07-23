@@ -76,13 +76,14 @@ public class OracleService {
     }
 
 
-    public void getDataFromUrlAndUpChain( String contractAddress, byte[] logId, String url, List<Object> httpResultIndexList) throws Exception {
+    public void getDataFromUrlAndUpChain( String contractAddress, byte[] logId, String url, String formate, List<String> httpResultIndexList) throws Exception {
         System.out.println("oracle service begins get off-chain result: wating....... " );
-       System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-        restTemplate.getMessageConverters().add(new PlainMappingJackson2HttpMessageConverter());
-        HttpService  httpService = new HttpService(restTemplate);
+       //System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
+       // restTemplate.getMessageConverters().add(new PlainMappingJackson2HttpMessageConverter());
+     //   HttpService  httpService = new HttpService(restTemplate);
         System.out.println("the http url is: "+ url);
-        Object httpResult = httpService.getObjectByUrlAndKeys(url, httpResultIndexList);
+        Object httpResult = HttpService.getObjectByUrlAndKeys(url,formate,  httpResultIndexList);
+
         System.out.println(" oracle service gets off-chain result: " + httpResult);
         //send transaction
         upBlockChain(contractAddress, logId, toJSONString(httpResult));
