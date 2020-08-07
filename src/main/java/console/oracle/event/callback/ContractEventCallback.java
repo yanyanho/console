@@ -78,8 +78,13 @@ public class ContractEventCallback extends EventLogPushWithDecodeCallback {
                 logger.debug("==========cidStr:{} arg:{} contractAddress:{} ", cidStr, argValue, contractAddress);
 
                // String url = subFiledValueForUrl(argValue);
-                if (StringUtils.isBlank(argValue)) {
-                    logger.warn("argValue is empty");
+                if(argValue.startsWith("\"")) {
+                    int len1 = argValue.length();
+                    argValue =argValue.substring(1,len1-1);
+                }
+                if(contractAddress.startsWith("\"")) {
+                    int len1 = contractAddress.length();
+                    contractAddress =contractAddress.substring(1,len1-1);
                 }
                 //  argValue = argValue.replace(SUB_URL_EVENT_FILED_PREFIX, "");
                 int left = argValue.indexOf("(");

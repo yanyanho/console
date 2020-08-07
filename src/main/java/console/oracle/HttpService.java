@@ -67,7 +67,7 @@ public class HttpService {
         if (jsonNode == null || keyList == null || keyList.size() == 0) return jsonNode;
         Object finalResult = jsonNode;
         for (String key : keyList) {
-            finalResult = getValueByKey(jsonNode, key);
+            finalResult = getValueByKey(finalResult, key);
         }
         return finalResult;
     }

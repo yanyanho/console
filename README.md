@@ -28,13 +28,13 @@ $ ./gradlew build
   此命令会用特定私钥执行OracleCore合约的部署，OracleCore合约对应由oracleService管理，oracleService并注册event事件监听。
  3. deploy SampleOracle  
    部署合约
- 4. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  oracle_setNetwork "OracleCore地址"   
+ 4. call SampleOracle {0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7}  oracle_setNetwork "OracleCore地址"   
   设置OracleCore地址，这样SampleOracle可以调用OracleCore合约。
- 5. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  setUrl "json(http://t.weather.sojson.com/api/weather/city/101030100).data.wendu"    
+ 5. call SampleOracle {0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7}  setUrl "json(https://api.exchangerate-api.com/v4/latest/CNY).rates.JPY"    
    设置你要访问的url。
- 6. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  update
+ 6. call SampleOracle {0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7}  update
    发起查询链下数据请求。oracleService监听到请求会发起http调用并回写到SampleOracle合约。
- 7. call SampleOracle 0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7  get  
+ 7. call SampleOracle {0x0b9e03b92566581ec9b735911ff7fe7e751dc7e7}  get  
     查询最新链下结果。
     
 

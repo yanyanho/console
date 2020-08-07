@@ -50,7 +50,7 @@ public class OracleTest {
     @Test
     public void httpsTest() throws IOException, NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
-        String argValue = "plain(https://www.random.org/integers/?num=100&min=1&max=100&col=1&base=10&format=plain&rnd=new)";
+        String argValue = "json(https://api.exchangerate-api.com/v4/latest/CNY).rates.JPY";
 
       //  String argValue = "json(https://api.kraken.com/0/public/Ticker?pair=ETHBTC).result.XETHXXBT.c.0";
             // String argValue = "json(https://api.apiopen.top/EmailSearch?number=1012002).result";
