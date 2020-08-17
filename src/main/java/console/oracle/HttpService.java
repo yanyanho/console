@@ -4,31 +4,22 @@ package console.oracle;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import console.common.HttpsUtil;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.List;
 
-import static console.common.JsonUtils.stringToJsonNode;
-import static console.common.JsonUtils.toJSONString;
-import static console.common.JsonUtils.toList;
+import static console.common.JsonUtils.*;
 
 /**
  * service for http request.
  */
-@Slf4j
 public class HttpService {
+    private static final Logger log = LoggerFactory.getLogger(HttpService.class);
 
     public static Object getObjectByUrlAndKeys(String url,String formate,  List<String> resultKeyList) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException, IOException {
         try {

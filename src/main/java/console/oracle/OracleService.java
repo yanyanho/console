@@ -5,23 +5,20 @@ import console.common.DecodeOutputUtils;
 import console.oracle.contract.OracleCore;
 import console.oracle.contract.TemplateOracle;
 import console.oracle.event.callback.ContractEventCallback;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.fisco.bcos.channel.client.Service;
 import org.fisco.bcos.channel.event.filter.EventLogUserParams;
 import org.fisco.bcos.web3j.abi.EventEncoder;
 import org.fisco.bcos.web3j.crypto.Credentials;
 import org.fisco.bcos.web3j.protocol.Web3j;
-    import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
+import org.fisco.bcos.web3j.protocol.channel.ChannelEthereumService;
 import org.fisco.bcos.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.fisco.bcos.web3j.tx.gas.ContractGasProvider;
 import org.fisco.bcos.web3j.tx.gas.StaticGasProvider;
 import org.fisco.bcos.web3j.tx.txdecode.TransactionDecoder;
 import org.fisco.bcos.web3j.utils.Numeric;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.support.AbstractRefreshableApplicationContext;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigInteger;
@@ -31,9 +28,8 @@ import java.util.List;
 import static console.common.JsonUtils.toJSONString;
 import static console.oracle.contract.OracleCore.LOG1_EVENT;
 
-@Slf4j
 public class OracleService {
-
+    private static final Logger log = LoggerFactory.getLogger(OracleService.class);
     private Web3j web3j;
     private Credentials credentials;
     private static BigInteger gasPrice = new BigInteger("1");

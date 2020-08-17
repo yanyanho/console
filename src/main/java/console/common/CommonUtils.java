@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 package console.common;
-
-import lombok.extern.slf4j.Slf4j;
 import org.fisco.bcos.web3j.abi.datatypes.generated.Bytes32;
 import org.fisco.bcos.web3j.crypto.Sign.SignatureData;
 import org.fisco.bcos.web3j.tx.txdecode.EventResultEntity;
 import org.fisco.bcos.web3j.utils.Numeric;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -29,10 +29,9 @@ import static console.common.JsonUtils.toJSONString;
 /**
  * CommonUtils.
  */
-@Slf4j
 public class CommonUtils {
 
-
+    private static final Logger log = LoggerFactory.getLogger(CommonUtils.class);
     /**
      * signatureDataToString.
      *

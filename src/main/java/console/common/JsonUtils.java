@@ -5,8 +5,9 @@ import com.fasterxml.jackson.core.JsonParser.Feature;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -19,8 +20,10 @@ import java.util.function.Supplier;
  * Jackson Util
  * edit by marsli from hujkay
  */
-@Slf4j
+
 public class JsonUtils {
+
+    private static final Logger log = LoggerFactory.getLogger(JsonUtils.class);
     private static final String STANDARD_FORMAT = "yyyy-MM-dd HH:mm:ss";
     /**
      * 设置一些通用的属性
